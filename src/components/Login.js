@@ -2,12 +2,7 @@ import { useEffect, useState} from "react";
 import {auth} from '../firebase/firebase.js';
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-{/*
-  Heads up! 👋
 
-  Plugins:
-    - @tailwindcss/forms
-*/}
 export default function Login(){
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ email: "", password: "" });

@@ -10,7 +10,7 @@ import "./index.css"
 import App from './App'
 import Login from './components/Login'
 import SignUp  from './components/SignUp';
-import Home from './components/Home';
+import ProductDisplay from './components/ProductDisplay';
 
 const router = createBrowserRouter([
   {
@@ -26,9 +26,10 @@ const router = createBrowserRouter([
     element: <SignUp/>
   },
   {
-    path: "/Home",
-    element: <Home/>
-  }
+    path: "/products/:category",
+    element: <ProductDisplay/>
+  },
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
