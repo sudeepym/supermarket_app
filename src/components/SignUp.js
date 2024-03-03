@@ -1,16 +1,11 @@
-import { useEffect, useState} from "react";
-import {auth} from '../firebase/firebase.js';
+import { useEffect, useState } from "react";
+import { auth } from '../firebase/firebase.js';
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-{/*
-  Heads up! 👋
 
-  Plugins:
-    - @tailwindcss/forms
-*/}
 export default function SignUp() {
   const navigate = useNavigate();
-  const [inputs, setInputs] = useState({ email: "", password: "" });
+  const [inputs, setInputs] = useState({ email: "", password: "",firstname: "" ,lastname: ""  });
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
   const handleChangeInput = (e) => {
@@ -22,7 +17,25 @@ export default function SignUp() {
       return alert("Please fill all fields");
     try {
       const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password);
-      navigate('/login');
+      // Send user data to Flask backend
+      const response = await fetch('http://127.0.0.1:5000/add_user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: inputs.email,
+          firstname: inputs.firstname,
+          lastname:inputs.lastname
+        })
+      });
+
+      if (response.ok) {
+        navigate('/login');
+      } else {
+        throw new Error('Failed to register user');
+      }
+      console.log(inputs)
     } catch (error) {
       alert(error)
     }
@@ -101,15 +114,29 @@ export default function SignUp() {
 
           <form action="#" className="mt-8 grid grid-cols-6 gap-6" onSubmit={handleRegister}>
             <div className="col-span-6 sm:col-span-3">
-              <label htmlFor="FirstName" className="block text-sm font-medium text-gray-700">
-                Username
+              <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
+                First Name
               </label>
 
               <input
                 type="text"
-                id="username"
-                name="username"
+                id="firstname"
+                name="firstname"
                 className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                onChange={handleChangeInput}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
+                Last Name
+              </label>
+
+              <input
+                type="text"
+                id="lastname"
+                name="lastname"
+                className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                onChange={handleChangeInput}
               />
             </div>
 
@@ -151,21 +178,6 @@ export default function SignUp() {
             </div>
 
             <div className="col-span-6">
-              <label htmlFor="MarketingAccept" className="flex gap-4">
-                <input
-                  type="checkbox"
-                  id="MarketingAccept"
-                  name="marketing_accept"
-                  className="size-5 rounded-md border-gray-200 bg-white shadow-sm"
-                />
-
-                <span className="text-sm text-gray-700">
-                  I want to receive emails about events, product updates and company announcements.
-                </span>
-              </label>
-            </div>
-
-            <div className="col-span-6">
               <p className="text-sm text-gray-500">
                 By creating an account, you agree to our
                 <a href="#" className="text-gray-700 underline"> terms and conditions </a>
@@ -178,7 +190,7 @@ export default function SignUp() {
               <button type="submit"
                 className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
               >
-                {loading? "Creating an account":"Create an account"}
+                {loading ? "Creating an account" : "Create an account"}
               </button>
 
               <p className="mt-4 text-sm text-gray-500 sm:mt-0">

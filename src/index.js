@@ -10,7 +10,7 @@ import "./index.css"
 import App from './App'
 import Login from './components/Login'
 import SignUp  from './components/SignUp';
-import Home from './components/Home';
+import Cart from './components/Cart';
 
 const router = createBrowserRouter([
   {
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
     element: <SignUp/>
   },
   {
-    path: "/Home",
-    element: <Home/>
+    path: "/Cart",
+    element: <Cart/>
   }
 ]);
 
