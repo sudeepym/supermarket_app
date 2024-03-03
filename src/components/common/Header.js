@@ -2,18 +2,20 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase";
 import React from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
-import { getAuth } from "firebase/auth";
+import { FaShoppingCart } from "react-icons/fa";
 
 
 export default function Header() {
   console.log(auth.currentUser)
+
   const [signOut, loading, error] = useSignOut(auth);
   const handleLogout = () => {
     signOut();
   };
+
   return (<header class="bg-gray-900">
     <div class="mx-auto flex h-16 max-w-screen items-center gap-8 px-4 sm:px-6 lg:px-8">
-      <Link class="block text-teal-300" to="#">
+      <Link class="block text-teal-300" to="/">
         <span class="sr-only">Home</span>
         <svg class="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -40,12 +42,22 @@ export default function Header() {
         <div class="flex items-center gap-4">
           <div class="sm:flex sm:gap-4">
             { auth.currentUser?(
-              <Link
-              class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
-              onClick={handleLogout}
-              >
-                SignOut
-              </Link>
+              <>
+                
+                <Link
+                class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
+                to="/Cart"
+                >
+                  <FaShoppingCart className="h-[20px] w-auto"/>
+                </Link>
+                <Link
+                class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
+                onClick={handleLogout}
+                >
+                  SignOut
+                </Link>
+              </>
+              
             ):
             (
               <>
@@ -74,3 +86,4 @@ export default function Header() {
     </div>
   </header>);
 }
+
