@@ -48,7 +48,7 @@ export default function Header() {
             <li>
               <Link
                 class="transition text-white hover:text-white/75"
-                to="/"
+                to="/Orders"
               >
                 Orders
               </Link>
