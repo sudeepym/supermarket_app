@@ -1,7 +1,6 @@
 import Header from "../src/components/common/Header";
 import { Link } from "react-router-dom";
 import { useState,useEffect } from "react";
-import Home from './components/Home';
 
 function App() {
   const categories = useGetCategories();
