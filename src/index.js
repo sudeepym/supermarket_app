@@ -10,6 +10,7 @@ import "./index.css"
 import App from './App'
 import Login from './components/Login'
 import SignUp  from './components/SignUp';
+import ProductDisplay from './components/ProductDisplay';
 import Cart from './components/Cart';
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     element: <SignUp/>
   },
   {
+    path: "/products/:category",
+    element: <ProductDisplay/>
+  },
+  
     path: "/Cart",
     element: <Cart/>
   }

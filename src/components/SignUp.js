@@ -35,7 +35,6 @@ export default function SignUp() {
       } else {
         throw new Error('Failed to register user');
       }
-      console.log(inputs)
     } catch (error) {
       alert(error)
     }

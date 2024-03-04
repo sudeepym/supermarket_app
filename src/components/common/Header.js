@@ -2,6 +2,21 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase";
 import React from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
+import { useAuthState } from 'react-firebase-hooks/auth';
+export default function Header() {
+  const [user, loading, error] = useAuthState(auth);
+  // console.log(user)
+  const [signOut, loading1, error1] = useSignOut(auth);
+  const handleLogout = () => {
+    signOut();
+  };
+  return (<header class="bg-gray-900">
+    <div class="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
+      <Link class="block text-teal-300" to="/">
+import { Link } from "react-router-dom";
+import { auth } from "../../firebase/firebase";
+import React from "react";
+import { useSignOut } from "react-firebase-hooks/auth";
 import { FaShoppingCart } from "react-icons/fa";
 
 
@@ -31,16 +46,55 @@ export default function Header() {
             <li>
               <Link
                 class="transition text-white hover:text-white/75"
-                to="#"
+                to="/"
               >
-                About
+                Products
               </Link>
             </li>
+            {user && (<><li>
+              <Link
+                class="transition text-white hover:text-white/75"
+                to="/"
+              >
+                Cart
+              </Link>
+            </li>
+            <li>
+              <Link
+                class="transition text-white hover:text-white/75"
+                to="/"
+              >
+                Orders
+              </Link>
+            </li></>)}
           </ul>
         </nav>
 
+
         <div class="flex items-center gap-4">
           <div class="sm:flex sm:gap-4">
+            {!loading && !user && (<>
+            <Link
+              class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
+              to="/Login"
+            >
+              Login
+            </Link>
+
+            <Link
+              class="hidden rounded-md  px-5 py-2.5 text-sm font-medium transition  sm:block bg-gray-800 text-white hover:text-white/75"
+              to="/SignUp"
+            >
+              Register
+            </Link>
+            </>)}
+            {!loading && user && (<Link
+              class="hidden rounded-md  px-5 py-2.5 text-sm font-medium transition  sm:block bg-gray-800 text-white hover:text-white/75"
+              onClick={handleLogout}
+            >
+              {loading1 && "Signing Out"}
+              {!loading1 && "Sign Out"}
+            </Link>)}
             { auth.currentUser?(
               <>
                 
