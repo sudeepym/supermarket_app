@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Header from "./common/Header";
 
 export default function Orders() {
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState(null);
     console.log(orders)
     const [user, loading, error] = useAuthState(auth);
     
@@ -50,7 +50,7 @@ export default function Orders() {
                     </div>
 
                     <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        {orders.map(order => (
+                        {orders && orders.map(order => (
                             <div key={order.Order_ID} className="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-pink-500/10">
                                 <h2 className="mt-4 text-xl font-bold text-white">Order ID: {order.Order_ID}</h2>
                                 <p className="mt-1 text-sm text-gray-300">Total: ${order.Total}</p>
