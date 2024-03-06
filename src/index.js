@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Profiler } from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import {
@@ -12,6 +12,7 @@ import Login from './components/Login'
 import SignUp  from './components/SignUp';
 import ProductDisplay from './components/ProductDisplay';
 import Cart from './components/Cart';
+import Profile from './components/Profile';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/Cart",
     element: <Cart/>
+  },
+  {
+    path: "/Profile",
+    element: <Profile/>
   }
 ]);
 

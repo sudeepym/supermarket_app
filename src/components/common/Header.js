@@ -3,7 +3,7 @@ import { auth } from "../../firebase/firebase";
 import React from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { useAuthState } from 'react-firebase-hooks/auth';
-
+import { CgProfile } from "react-icons/cg";
 import { FaShoppingCart } from "react-icons/fa";
 export default function Header() {
   const [user, loading, error] = useAuthState(auth);
@@ -44,6 +44,14 @@ export default function Header() {
                 >
                   <FaShoppingCart className="h-[20px] w-auto"/>
                 </Link>
+            </li>
+            <li>
+              <Link
+                class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
+                to="/Profile"
+              >
+                  <CgProfile className="h-[20px] w-auto"/>
+              </Link>
             </li>
             <li>
               <Link
