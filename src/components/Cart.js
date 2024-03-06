@@ -7,7 +7,16 @@ export default function Cart()
     
     const [items,setItems] = useState([])
     const [quantity,setQuantity]= useState();
+    const [address,setAddress] = useState([]);
     const [forceRerender, setForceRerender] = useState(false);
+    // Define state to store the selected address
+    const [selectedAddress, setSelectedAddress] = useState(null);
+    
+
+    // Event handler to update the selected address
+    const selectAddress = (addressIndex) => {
+    setSelectedAddress(addressIndex);
+    };
 
     useEffect(()=>{
         //fetch data from db
@@ -39,6 +48,38 @@ export default function Cart()
 
       fetchCart();
     }, [forceRerender]);
+    useEffect(()=>{
+        //fetch data from db
+        const fetchInfo = async()=> {
+
+
+          try {
+
+            const response = await fetch('http://127.0.0.1:5000/address/get', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                email: auth.currentUser.email
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const jsonData = await response.json();
+            console.log(jsonData[0])
+            // console.log(JSON.parse(jsonData[0])[0]);
+          setAddress(JSON.parse(jsonData[0]))
+          
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+      }
+
+      fetchInfo();
+    }, []);
 
     const IncQuantity = async(Pname,Quantity) => {
         try {
@@ -130,7 +171,40 @@ export default function Cart()
     if(items)
     {
         totalPrice = items.reduce((total, item) => total + (item.Price * item.Quantity), 0);
-    }       
+    }    
+
+    const Checkout = async()=>{
+        // Perform action based on the selected address, for example:
+        if (selectedAddress !== null) {
+            const selectedAddr = address[selectedAddress];
+            try {
+
+                const response = await fetch('http://127.0.0.1:5000/move_to_previous_order', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                    user_id: auth.currentUser.email,
+                    address_id:selectedAddress
+                    })
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const jsonData = await response.json();
+                alert(jsonData.message)
+              
+              
+            } catch (error) {
+                alert('There was a problem with the ordering operation:', error);
+            }
+            
+        } else {
+        alert("Please select an address before proceeding to checkout.");
+        }
+    }
 
     return(
     <>
@@ -223,14 +297,37 @@ export default function Cart()
                     </div>
                     </dl>
 
+                    <div className="text-3xl container">Addresses</div>
+                            <div className="flow-root ">
+                                <dl className="-my-3 divide-y divide-gray-100 text-sm"></dl>
+                                {address ? (
+                                            address.map((addr, index) => (
+                                                <div
+                                                key={addr.address_id}
+                                                onClick={() => selectAddress(addr.address_id)} // Update the selected address on click
+                                                className={`grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-4 sm:gap-4 cursor-pointer ${
+                                                    selectedAddress === addr.address_id ? 'border border-blue-500' : '' // Apply border for selected address
+                                                }`}
+                                                >
+                                                <dt className="font-medium text-gray-900">Address {index + 1}</dt>
+                                                <dd className="text-gray-700 sm:col-span-2">{addr.address}</dd>
+                                                <dd className="text-gray-700 sm:col-span-1">{addr.postal_code}</dd>
+                                                </div>
+                                            ))
+                                            ) : (
+                                            <div>No Addresses</div>
+                                    )}
+                                
+                            </div>
+
 
                     <div className="flex justify-end">
-                    <a
-                        href="#"
+                    <button
+                        onClick={Checkout}
                         className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
-                    >
+                        >
                         Checkout
-                    </a>
+                        </button>
                     </div>
                 </div>
                 </div>
