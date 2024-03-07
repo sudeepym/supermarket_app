@@ -1,10 +1,10 @@
 import Header from "./common/Header"
 import { useState,useEffect } from "react";
 import { auth } from "../firebase/firebase";
+import { useNavigate } from "react-router-dom";
 
-export default function Cart()
-{
-    
+export default function Cart(){
+    const navigate = useNavigate();
     const [items,setItems] = useState([])
     const [quantity,setQuantity]= useState();
     const [address,setAddress] = useState([]);
@@ -174,7 +174,12 @@ export default function Cart()
     }    
 
     const Checkout = async()=>{
-        // Perform action based on the selected address, for example:
+        // Perform action based on the selected address
+        if(items===null)
+        {
+            alert('Add item to carts first')
+            return
+        }
         if (selectedAddress !== null) {
             const selectedAddr = address[selectedAddress];
             try {
@@ -195,7 +200,7 @@ export default function Cart()
                 }
                 const jsonData = await response.json();
                 alert(jsonData.message)
-              
+                navigate("/Orders")
               
             } catch (error) {
                 alert('There was a problem with the ordering operation:', error);

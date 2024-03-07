@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [inputs, setInputs] = useState({ email: "", password: "",firstname: "" ,lastname: ""  });
+  const [inputs, setInputs] = useState({ email: "", password: "",firstname: "" ,lastname: "",mobile: ""  });
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
   const handleChangeInput = (e) => {
@@ -26,7 +26,8 @@ export default function SignUp() {
         body: JSON.stringify({
           email: inputs.email,
           firstname: inputs.firstname,
-          lastname:inputs.lastname
+          lastname:inputs.lastname,
+          mobile:inputs.mobile,
         })
       });
 
@@ -146,6 +147,18 @@ export default function SignUp() {
                 type="email"
                 id="Email"
                 name="email"
+                className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                onChange={handleChangeInput}
+              />
+            </div>
+
+            <div className="col-span-6">
+              <label htmlFor="Mobile" className="block text-sm font-medium text-gray-700"> Mobile </label>
+
+              <input
+                type="text"
+                id="Mobile"
+                name="mobile"
                 className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                 onChange={handleChangeInput}
               />
