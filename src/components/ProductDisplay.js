@@ -53,30 +53,30 @@ export default function ProductDisplay() {
     return (
         <>
             <Header />
-            <section className="bg-gray-900 text-white min-h-screen">
+            <section className="bg-white text-black min-h-screen">
                 <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
                     {products === null || loading ? (
                         <div className="text-center text-gray-400">Out of Stock</div>
                     ) : (
-                        <div className=' flex flex-wrap gap-8'>
+                        <div className=' flex flex-wrap gap-20 justify-evenly'>
                             {products.map((product, idx) => {
                                 return (
-                                    <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3" id={`${product.Product_Id}`}>
-                                        <div class="group relative block overflow-hidden max-w-64">
+                                    <div className="mt-8" id={`${product.Product_Id}`}>
+                                        <div class="group relative block overflow-hidden w-56">
                                             
                                             <img
                                                 src={`${product.Product_Image}`}
                                                 alt=""
-                                                class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
+                                                class="h-36 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-44"
                                             />
         
-                                            <div class="relative border border-gray-100 bg-white p-6">
+                                            <div class="relative border border-gray-100 bg-gray-900 text-white p-6">
         
-                                                <h3 class="mt-4 text-lg font-medium text-gray-900">{product.Product_Name}</h3>
+                                                <h3 class="mt-4 text-lg font-medium ">{product.Product_Name}</h3>
         
-                                                <p class="mt-1.5 text-sm text-gray-700">{product.Product_Brand}</p>
-                                                <p class="mt-1.5 text-sm text-gray-700">{product.Product_Price}</p>
-                                                <p class="mt-1.5 text-sm text-gray-700">{product.Product_Description}</p>
+                                                <p class="mt-1.5 text-sm ">{product.Product_Brand}</p>
+                                                <p class="mt-1.5 text-sm ">{(product.Product_Price).toFixed(2)}</p>
+                                                <p class="mt-1.5 text-sm ">{product.Product_Description}</p>
         
                                                 <form class="mt-4">
                                                     {user ? (<button

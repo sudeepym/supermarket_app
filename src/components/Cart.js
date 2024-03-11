@@ -13,6 +13,7 @@ export default function Cart(){
     const [forceRerender, setForceRerender] = useState(false);
     // Define state to store the selected address
     const [selectedAddress, setSelectedAddress] = useState(null);
+    console.log(items)
     
 
     // Event handler to update the selected address
@@ -176,11 +177,20 @@ export default function Cart(){
     }    
 
     const Checkout = async()=>{
+        setForceRerender(!forceRerender);
         // Perform action based on the selected address
         if(items===null)
         {
             alert('Add item to carts first')
             return
+        }
+         // Check if the MaxQuantity is greater than or equal to the Quantity for each item
+        for (const item of items) {
+            if (item.MaxQuantity < item.Quantity) {
+                alert(`The quantity of ${item.Product_Name} exceeds the maximum available quantity`);
+                DecQuantity(item.Product_Name,item.MaxQuantity+1)
+                return;
+            }
         }
         if (selectedAddress !== null) {
             const selectedAddr = address[selectedAddress];
@@ -229,7 +239,7 @@ export default function Cart(){
                         items.map((item, index) => (
                             <li key={index} className="flex items-center gap-4">
                             <img
-                            src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80"
+                            src={`${item.Product_Image}`}
                             alt=""
                             className="size-16 rounded object-cover"
                             />
@@ -250,9 +260,9 @@ export default function Cart(){
                                 <label for="Quantity" class="sr-only"> Quantity </label>
                     
                                 <div class="flex items-center gap-1">
-                                    <button onClick={() => DecQuantity(item.Product_Name,item.Quantity)} type="button" class="size-10 leading-10 text-gray-600 transition hover:opacity-75">
+                                    {item.Quantity>1 && <button onClick={() => DecQuantity(item.Product_Name,item.Quantity)} type="button" class="size-10 leading-10 text-gray-600 transition hover:opacity-75">
                                     -
-                                    </button>
+                                    </button>}
                     
                                     <div
                                     class="h-10 w-16 rounded border-gray-200 text-center py-2"
@@ -260,9 +270,9 @@ export default function Cart(){
                                     {item.Quantity}
                                     </div>
                     
-                                    <button onClick={() => IncQuantity(item.Product_Name,item.Quantity)} type="button" class="size-10 leading-10 text-gray-600 transition hover:opacity-75">
+                                    {item.Quantity < item.MaxQuantity && <button onClick={() => IncQuantity(item.Product_Name,item.Quantity)} type="button" class="size-10 leading-10 text-gray-600 transition hover:opacity-75">
                                     +
-                                    </button>
+                                    </button>}
                                 </div>
                             </div>
                     
@@ -295,49 +305,47 @@ export default function Cart(){
                 </ul>
 
                 <div className="mt-8 flex justify-end border-t border-gray-100 pt-8">
-                <div className="w-screen max-w-lg space-y-4">
-                    <dl className="space-y-0.5 text-sm text-gray-700">
+                    <div className="w-screen max-w-lg space-y-4">
+                        <dl className="space-y-0.5 text-sm text-gray-700">
 
-                    <div className="flex justify-between !text-base font-medium">
-                        <dt>Total</dt>
-                        <dd>{totalPrice}</dd>
-                    </div>
-                    </dl>
+                        <div className="flex justify-between !text-base font-medium">
+                            <dt>Total</dt>
+                            <dd>{totalPrice.toFixed(2)}</dd>
+                        </div>
+                        </dl>
 
-                    <div className="text-3xl container">Addresses</div>
-                            <div className="flow-root ">
-                                <dl className="-my-3 divide-y divide-gray-100 text-sm"></dl>
-                                {address ? (
-                                            address.map((addr, index) => (
-                                                <div
-                                                key={addr.address_id}
-                                                onClick={() => selectAddress(addr.address_id)} // Update the selected address on click
-                                                className={`grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-4 sm:gap-4 cursor-pointer ${
-                                                    selectedAddress === addr.address_id ? 'border border-blue-500' : '' // Apply border for selected address
-                                                }`}
-                                                >
-                                                <dt className="font-medium text-gray-900">Address {index + 1}</dt>
-                                                <dd className="text-gray-700 sm:col-span-2">{addr.address}</dd>
-                                                <dd className="text-gray-700 sm:col-span-1">{addr.postal_code}</dd>
-                                                </div>
-                                            ))
-                                            ) : (
-                                            <div>No Addresses</div>
-                                    )}
-                                
-                            </div>
-
-
-                    <div className="flex justify-end">
-                    <button
-                        onClick={Checkout}
-                        className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
-                        >
-                        Checkout
-                        </button>
+                        <div className="flex justify-end">
+                        <button
+                            onClick={Checkout}
+                            className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
+                            >
+                            Checkout
+                            </button>
+                        </div>
                     </div>
                 </div>
-                </div>
+                <div className="text-3xl container">Addresses</div>
+                    <div className="flow-root ">
+                        <dl className="-my-3 divide-y divide-gray-100 text-sm"></dl>
+                        {address ? (
+                                    address.map((addr, index) => (
+                                        <div
+                                        key={addr.address_id}
+                                        onClick={() => selectAddress(addr.address_id)} // Update the selected address on click
+                                        className={`grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-4 sm:gap-4 cursor-pointer ${
+                                            selectedAddress === addr.address_id ? 'border border-blue-500' : '' // Apply border for selected address
+                                        }`}
+                                        >
+                                        <dt className="font-medium text-gray-900">Address {index + 1}</dt>
+                                        <dd className="text-gray-700 sm:col-span-2">{addr.address}</dd>
+                                        <dd className="text-gray-700 sm:col-span-1">{addr.postal_code}</dd>
+                                        </div>
+                                    ))
+                                    ) : (
+                                    <div>No Addresses</div>
+                            )}
+                        
+                    </div>
             </div>
             </div>
         </div>

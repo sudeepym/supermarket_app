@@ -5,14 +5,16 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 
 export default function Profile(){
-
     const [user, loading, error] = useAuthState(auth);
     const [info,setInfo] = useState([]);
     const [address,setAddress] = useState([]);
     const [text, setText] = useState('');
     const [pc, setPC] = useState('');
+    const [forceRerender, setForceRerender] = useState(false);
 
     const handleButtonClick = async() => {
+        if(!(/^\d{6}$/.test(pc)))
+        return alert("Invalid Postal Id")
         if (text.trim() !== '' && pc.trim() !== '') {
             try {
 
@@ -33,6 +35,7 @@ export default function Profile(){
                 }
                 const jsonData = await response.json();
                 alert("Address added successfully!")
+                setForceRerender(!forceRerender)
               
             } catch (error) {
                 console.error('There was a problem with updating address', error);
@@ -104,7 +107,7 @@ export default function Profile(){
       }
 
       fetchInfo();
-    }, [user]);
+    }, [user,forceRerender]);
 
     return(
         <>
@@ -167,7 +170,7 @@ export default function Profile(){
                             onChange={handleAddressChange}
                             rows = "3"
                             id="Address"
-                            placeholder="xyz street, abc apartment"
+                            placeholder="House No, Street Name, Area, Landmark"
                             className="mt-1 w-[300px] rounded-md border-solid border-gray-600 shadow-sm sm:text-sm"
                         />
                     </div>
