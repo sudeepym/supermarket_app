@@ -14,6 +14,7 @@ import ProductDisplay from './components/ProductDisplay';
 import Cart from './components/Cart';
 import Profile from './components/Profile';
 import Orders from './components/Orders';
+import Owner from './components/Owner';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: "/Profile",
     element: <Profile/>
+  },
+  {
+    path: "/Owner",
+    element: <Owner/>
   }
 ]);
 
