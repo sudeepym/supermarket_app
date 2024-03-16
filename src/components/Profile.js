@@ -5,6 +5,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 
 export default function Profile(){
+    console.log(auth.currentUser)
     const [user, loading, error] = useAuthState(auth);
     const [info,setInfo] = useState([]);
     const [address,setAddress] = useState([]);
@@ -57,6 +58,7 @@ export default function Profile(){
     useEffect(()=>{
         //fetch data from db
         const fetchInfo = async()=> {
+            
           try {
 
               const response = await fetch('http://127.0.0.1:5000/profile/get', {

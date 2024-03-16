@@ -12,6 +12,7 @@ export default function Login(){
     const handleInputChange = (e) => {
       setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
+    console.log(inputs.email==="admin@gmail.com")
     const handleLogin = async (e) => {
       e.preventDefault();
       if (!inputs.email || !inputs.password)
@@ -24,6 +25,9 @@ export default function Login(){
           inputs.password
         );
         if (!newUser) return;
+        if(inputs.email==="admin@gmail.com")
+        navigate('/Owner')
+        else
         navigate('/')
       } catch (error) {
         alert(error)
