@@ -243,7 +243,7 @@ export default function Cart(){
                             <li key={index} className="flex items-center gap-4">
                             <img
                             src={`${atob((item.Product_Image).slice(15,))}`}
-                            alt=""
+                            alt={`${item.Product_Alt}`}
                             className="size-16 rounded object-cover"
                             />
                     

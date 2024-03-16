@@ -68,7 +68,7 @@ export default function ProductDisplay() {
                                             
                                             <img
                                                 src={`${atob((product.Product_Image).slice(15,))}`}
-                                                alt=""
+                                                alt={`${product.Product_Alt}`}
                                                 class="h-36 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-44"
                                             />
         
