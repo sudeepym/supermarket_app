@@ -17,6 +17,7 @@ import { useSignOut } from "react-firebase-hooks/auth";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { CgProfile } from "react-icons/cg";
 import { FaShoppingCart } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const products = [
   { name: 'Analytics', description: 'Get Link better understanding of your traffic', to: '#', icon: ChartPieIcon },
@@ -35,6 +36,7 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const [user, loading, error] = useAuthState(auth);
@@ -42,6 +44,7 @@ export default function Example() {
   const [signOut, loading1, error1] = useSignOut(auth);
   const handleLogout = () => {
     signOut();
+    navigate("/");
   };
 
   return (
@@ -182,7 +185,7 @@ export default function Example() {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                <Disclosure as="div" className="-mx-3">
+                {/* <Disclosure as="div" className="-mx-3">
                   {({ open }) => (
                     <>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
@@ -206,7 +209,7 @@ export default function Example() {
                       </Disclosure.Panel>
                     </>
                   )}
-                </Disclosure>
+                </Disclosure> */}
                 {!loading && user && (
                     <>
                         <Link
