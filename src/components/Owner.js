@@ -2,7 +2,6 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { auth } from "../firebase/firebase";
 import { useSignOut } from "react-firebase-hooks/auth";
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 
 export default function Owner() {
@@ -21,7 +20,6 @@ export default function Owner() {
   const [newProduct, setNewProduct] = useState({ p_name: "", p_desc: "", price: "", quantity: "", image: "", alt: "", inc_quantity: "" });
   const [forceRerender, setForceRerender] = useState(false);
 
-  const [user, loading, error] = useAuthState(auth);
   // console.log(user)
   const [signOut, loading1, error1] = useSignOut(auth);
   const handleLogout = () => {
@@ -382,12 +380,12 @@ export default function Owner() {
 
   return (
     <>
-    <button
-            onClick={handleLogout}
-            className="block rounded-md bg-gray-900 mt-4 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
-          >
-            Signout
-          </button>
+      {!loading1 && (<button
+        onClick={handleLogout}
+        className="block rounded-md bg-gray-900 mt-4 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
+      >
+        Signout
+      </button>)}
       <div className="flex flex-row items-start ml-10 sm:ml-[100px] mt-10 sm:mt-20 mr-10 sm:mr-0 flex-wrap mb-10">
         <div className="flex flex-col grow w-1/2 overflow-y-auto max-h-96">
           <div className="text-4xl mt-10 mb-10 font-semibold">Categories</div>

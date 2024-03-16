@@ -188,6 +188,9 @@ export default function Cart(){
         for (const item of items) {
             if (item.MaxQuantity < item.Quantity) {
                 alert(`The quantity of ${item.Product_Name} exceeds the maximum available quantity`);
+                if(item.MaxQuantity === 0 )
+                delete_item(item.Product_Name)
+                else
                 DecQuantity(item.Product_Name,item.MaxQuantity+1)
                 return;
             }
@@ -239,7 +242,7 @@ export default function Cart(){
                         items.map((item, index) => (
                             <li key={index} className="flex items-center gap-4">
                             <img
-                            src={`${item.Product_Image}`}
+                            src={`${atob((item.Product_Image).slice(15,))}`}
                             alt=""
                             className="size-16 rounded object-cover"
                             />
@@ -324,7 +327,7 @@ export default function Cart(){
                         </div>
                     </div>
                 </div>
-                <div className="text-3xl container">Addresses</div>
+                <div className="text-3xl container my-10">Addresses</div>
                     <div className="flow-root ">
                         <dl className="-my-3 divide-y divide-gray-100 text-sm"></dl>
                         {address ? (

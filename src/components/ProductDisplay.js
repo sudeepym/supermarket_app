@@ -6,6 +6,7 @@ import {auth} from '../firebase/firebase.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function ProductDisplay() {
+    
     const [user, loading, error] = useAuthState(auth);
     const { category } = useParams();
     const products = useGetProducts(category);
@@ -60,12 +61,13 @@ export default function ProductDisplay() {
                     ) : (
                         <div className=' flex flex-wrap gap-20 justify-evenly'>
                             {products.map((product, idx) => {
+                                
                                 return (
                                     <div className="mt-8" id={`${product.Product_Id}`}>
                                         <div class="group relative block overflow-hidden w-56">
                                             
                                             <img
-                                                src={`${product.Product_Image}`}
+                                                src={`${atob((product.Product_Image).slice(15,))}`}
                                                 alt=""
                                                 class="h-36 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-44"
                                             />
