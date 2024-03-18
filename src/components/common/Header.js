@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   ArrowPathIcon,
@@ -38,14 +38,38 @@ function classNames(...classes) {
 export default function Example() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
   const [user, loading, error] = useAuthState(auth);
+  const [totalItems, setTotalItems] = useState(null);
   // console.log(user)
   const [signOut, loading1, error1] = useSignOut(auth);
   const handleLogout = () => {
     signOut();
     navigate("/");
   };
+
+  useEffect(() => {
+    const fetchTotalItems = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/cart_total_items', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: user.email,
+
+            })
+        });
+        const data = await response.json();
+        setTotalItems(data.total_items_in_cart);
+      } catch (error) {
+        console.error('There was a problem with fetching total cart items: ', error);
+      }
+    };
+
+    fetchTotalItems();
+  }, [user]);
+
 
   return (
     <header className="bg-gray-900">
@@ -140,10 +164,10 @@ export default function Example() {
             {!loading && user && (
             <>
                 <Link
-                class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
+                class="block rounded-md bg-teal-600 pl-5 pr-7 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
                 to="/Cart"
                 >
-                  <FaShoppingCart className="h-[20px] w-auto"/>
+                  <FaShoppingCart className="h-[20px] w-auto"/> <span className='absolute top-[34px] right-[248px]'>{totalItems}</span>
                 </Link>
                 <Link
                 class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500"
