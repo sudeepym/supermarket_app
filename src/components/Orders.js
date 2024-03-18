@@ -11,6 +11,7 @@ export default function Orders() {
     const [user, loading, error] = useAuthState(auth);
     const [selectedOrder, setSelectedOrder] = useState(null); // State to track selected order
     const [selectedOrderDetails, setSelectedOrderDetails] = useState(null); // State to track selected order
+    const [message, setMessage] = useState(null);
     console.log(orders)
     
     const selectOrder = (orderIndex) => {
@@ -76,8 +77,16 @@ export default function Orders() {
                 });
     
                 if (response.ok) {
-                    alert('Items moved to cart successfully');
-                    navigate("/Cart")
+                    const data = await response.json();
+                    if (data.error) {
+                        // Display alert for failed items
+                        setMessage(`${data.error}`);
+                        
+                    } else {
+                        // Display success message
+                        setMessage('Items from previous order added to cart successfully');
+                        
+                    }
                     // Optionally, you can update the UI to reflect changes
                 } else {
                     console.error('Failed to move items to cart:', response.status);
@@ -100,13 +109,15 @@ export default function Orders() {
                     <div className="mx-auto max-w-lg text-center">
                         <h2 className="text-3xl font-bold sm:text-4xl">Order List</h2>
                     </div>
-
+                    {message && (
+                        <div className="bg-yellow-200 p-4 text-yellow-800 text-center">{message}</div>
+                    )}
                     <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 my-10">
                         {orders && orders.map(order => (
                             <div key={order.Order_ID} 
                             onClick={() => setSelectedOrder(order.Order_ID)}
-                            className={`block rounded-xl border-4 border-gray-200 p-8 shadow-xl transition hover:border-teal-500/10 hover:shadow-teal-600/30${
-                                selectedOrder === order.Order_ID ? 'border-4 border-blue-800 hover:border-blue-600 hover:shadow-blue-700/10' : '' 
+                            className={`block rounded-xl border-4 p-8 ${
+                                selectedOrder === order.Order_ID ? 'border-4 border-blue-800 hover:border-blue-600 hover:shadow-blue-700/10' : 'border-gray-200  shadow-xl transition hover:border-teal-500/10 hover:shadow-teal-600/30' 
                             }`}>
                                 <h2 className="mt-4 text-xl font-bold text-black">Order ID: {order.Order_ID}</h2>
                                 <p className="mt-1 text-sm text-gray-800">Total: ${order.Total.toFixed(2)}</p>
