@@ -35,7 +35,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function Example({ cartSize }) {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [user, loading, error] = useAuthState(auth);
@@ -68,7 +68,7 @@ export default function Example() {
     };
 
     fetchTotalItems();
-  }, [user]);
+  }, [user,cartSize]);
 
 
   return (

@@ -10,6 +10,7 @@ export default function ProductDisplay() {
     const [user, loading, error] = useAuthState(auth);
     const { category } = useParams();
     const products = useGetProducts(category);
+    const [cartSize,SetCartSize] = useState(false)
     const onAddToCart = (e,product) => {
         e.preventDefault()
         // Get the necessary data such as user ID, product ID, and quantity
@@ -35,6 +36,7 @@ export default function ProductDisplay() {
         })
         .then(response => {
             if (response.ok) {
+                SetCartSize(!cartSize)
                 return response.json();
             }
             throw new Error('Failed to add item to cart');
@@ -53,7 +55,7 @@ export default function ProductDisplay() {
     
     return (
         <>
-            <Header />
+            <Header cartSize={cartSize}/>
             <section className="bg-white text-black min-h-screen">
                 <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
                     {products === null || loading ? (
