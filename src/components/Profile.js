@@ -5,7 +5,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 
 export default function Profile(){
-    console.log(auth.currentUser)
+    //console.log(auth.currentUser)
     const [user, loading, error] = useAuthState(auth);
     const [info,setInfo] = useState([]);
     const [address,setAddress] = useState([]);
@@ -143,11 +143,11 @@ export default function Profile(){
                     </dl>
                 </div>
                 <div className="text-4xl mt-20 mb-10 font-semibold">Addresses</div>
-                <div className="flow-root w-full pr-0 sm:pr-20">
+                <div className="flow-root w-full pr-0 sm:pr-20 ">
                     <dl className="-my-3 divide-y divide-gray-100 text-sm"></dl>
                     {address ? (
                             address.map((addr, index) => (
-                                <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-4 sm:gap-4">
+                                <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
                                     <dt className="font-medium text-gray-900">Address {index+1}</dt>
                                     <dd className="text-gray-700 sm:col-span-2">{addr.address}</dd>
                                     <dd className="text-gray-700 sm:col-span-1">{addr.postal_code}</dd>
