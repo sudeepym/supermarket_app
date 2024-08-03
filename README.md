@@ -34,7 +34,7 @@ The application follows a client-server architecture:
 ### Backend Setup
 
 1. Clone the repository:
-git clone https://github.com/your-repo/supermarket-web-app.git
+git clone [https://github.com/your-repo/supermarket-web-app.git](https://github.com/sudeepym/supermarket_app.git)
 cd supermarket-web-app
 Copy
 2. Set up a virtual environment:
